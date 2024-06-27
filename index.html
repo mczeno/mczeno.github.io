@@ -1,1 +1,169 @@
-<h1 style="text-align: center; margin-top: 100px;">这个人已经被金钱腐蚀，只想搞钱</h1>
+<!DOCTYPE html>
+<html lang="zh">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>主页</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-family: "Microsoft YaHei", Arial, sans-serif;
+                background-color: #f0f0f0;
+            }
+
+            .centered-text {
+                text-align: center;
+                padding: 30px;
+                background-color: white;
+                border-radius: 12px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                cursor: pointer;
+                transition: transform 0.3s ease;
+            }
+
+            .centered-text:hover {
+                transform: scale(1.05);
+            }
+
+            h1 {
+                font-size: 2.5em;
+                margin-bottom: 20px;
+                background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                color: transparent;
+            }
+
+            p {
+                font-size: 1.2em;
+                line-height: 1.6;
+                background: linear-gradient(45deg, #4ecdc4, #45b7d8);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                color: transparent;
+            }
+
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                opacity: 0;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                font-size: 24px;
+                font-weight: bold;
+                transform: translateY(20px);
+                text-align: right;
+            }
+
+            .notification.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .coin {
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                background: linear-gradient(45deg, #ffd700, #ffcc00);
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                color: #b8860b;
+                font-size: 24px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                user-select: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="centered-text" id="coinButton">
+            <h1>这个人已经被金钱腐蚀，只想搞钱！</h1>
+            <p>This person has been corrupted by money and only wants to make money!</p>
+        </div>
+
+        <div id="notification" class="notification">
+            <span>明天会更好！</span>
+            <br />
+            <span>Tomorrow will be better！</span>
+        </div>
+
+        <script>
+            function showMessage() {
+                const notification = document.getElementById('notification');
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+
+            const button = document.getElementById('coinButton');
+            button.addEventListener('click', createCoins);
+
+            function createCoins() {
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => createCoin(), i * 50);
+                }
+            }
+
+            function createCoin() {
+                const coin = document.createElement('div');
+                coin.className = 'coin';
+                coin.textContent = '¥';
+
+                const buttonRect = button.getBoundingClientRect();
+                const startX = buttonRect.left + buttonRect.width / 2;
+                const startY = buttonRect.top;
+
+                coin.style.left = `${startX}px`;
+                coin.style.top = `${startY}px`;
+
+                document.body.appendChild(coin);
+
+                const angle = (Math.random() * 60 + 60) * Math.PI / 180;
+                const velocity = 15 + Math.random() * 5;
+                const gravity = 0.5;
+
+                let vx = velocity * Math.cos(angle);
+                let vy = -velocity * Math.sin(angle);
+
+                let x = 0;
+                let y = 0;
+                let rotation = 0;
+
+                function animate() {
+                    x += vx;
+                    y += vy;
+                    vy += gravity;
+                    rotation += 10;
+
+                    coin.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+
+                    if (startY + y > window.innerHeight) {
+                        coin.remove();
+                    } else {
+                        requestAnimationFrame(animate);
+                    }
+                }
+
+                requestAnimationFrame(animate);
+            }
+        </script>
+    </body>
+
+</html>
