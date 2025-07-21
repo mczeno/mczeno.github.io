@@ -1,0 +1,16 @@
+# Hugo build output
+public/
+
+# Hugo lock file
+.hugo_build.lock
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.log
